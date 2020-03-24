@@ -17,12 +17,19 @@
         （1）加入对静态资源的处理：js，gif，png
         （2）允许使用"/"做整体映射-->
     <mvc:default-servlet-handler/>
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
+<!--    <mvc:resources mapping="/resources/**" location="/resources/"/>-->
 
     <!--3.定义视图解析器-->
     <bean id="viecResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/WEB-INF/html/"/>
         <property name="suffix" value=".html"/>
+    </bean>
+    <!-- 文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"/>
+        <!-- 1024*1024*20 = 20M -->
+        <property name="maxUploadSize" value="20971520"/>
+        <property name="maxInMemorySize" value="20971520"/>
     </bean>
 
     <!--4.扫描web相关的bean-->
