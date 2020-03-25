@@ -17,6 +17,11 @@ public class ShopDaoTest extends BaseTest {
     private ShopDao shopDao;
 
     @Test
+    public void testQueryByShopId(){
+        Shop shop = shopDao.queryByShopId(41L);
+        System.out.println("要查询的店铺名称为： " + shop.getShopName());
+    }
+    @Test
     public void testInsertShop(){
         Shop shop = new Shop();
         PersonInfo owner = new PersonInfo();

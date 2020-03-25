@@ -59,7 +59,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     /**
-     * 根据shop的ID添加图片，并将图片存储的相对值路径存到shop中
+     * 根据shop的ID存储图片，并将图片存储的相对值路径存到shop中
      * @param shop
      * @param imgFile
      */
@@ -71,4 +71,44 @@ public class ShopServiceImpl implements ShopService {
         logger.debug("addShopImg imgFile.getName():" + imgFile.getName());
         shop.setShopImg(relativeAddr);
     }
+
+    public Shop getByShopId(Long shopId) {
+        return shopDao.queryByShopId(shopId);
+    }
+
+    public ShopExecution modifyShop(Shop shop, File imgFile) throws ShopOperationException{
+        //1.空值判断
+        if (shop != null && shop.getShopId() != null){
+            try{
+                //2.判断是否需要处理图片
+                //如果传入的imgFile不为空
+                if (imgFile != null){
+                    Shop tempShop = shopDao.queryByShopId(shop.getShopId());
+                    String shopImgAddr= tempShop.getShopImg();
+                    if (shopImgAddr != null){
+                        //将图片原路径及图片删除
+                        ImageUtil.deleteFileOrPath(shopImgAddr);
+                        //根据店铺ID存储新的图片，并将图片存储的相对值路径添加到shop中
+                        addShopImg(shop, imgFile);
+                    }
+                }
+                //3.更新店铺
+                //给shop赋初始值
+                shop.setLastEditTime(new Date());
+                //更新
+                int effectedNum = shopDao.updateShop(shop);
+                if (effectedNum <= 0){
+                    return new ShopExecution(ShopStateEnum.INNER_ERROR);
+                }else {
+                    shop = shopDao.queryByShopId(shop.getShopId());
+                    return new ShopExecution(ShopStateEnum.SUCCESS, shop);
+                }
+            }catch (Exception e){
+                throw  new ShopOperationException("modifyShop error:" + e.getMessage());
+            }
+        }else {
+            return new ShopExecution(ShopStateEnum.NULL_SHOP);
+        }
+    }
+
 }

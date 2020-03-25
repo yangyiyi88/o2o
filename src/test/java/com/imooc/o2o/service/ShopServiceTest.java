@@ -7,12 +7,14 @@ import com.imooc.o2o.entity.PersonInfo;
 import com.imooc.o2o.entity.Shop;
 import com.imooc.o2o.entity.ShopCategory;
 import com.imooc.o2o.enums.ShopStateEnum;
+import com.imooc.o2o.exception.ShopOperationException;
 import com.imooc.o2o.service.impl.ShopServiceImpl;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -43,5 +45,15 @@ public class ShopServiceTest extends BaseTest {
         File imgFile = new File("/Users/yangkun/Pictures/image/xiaohuangren.jpg");
         ShopExecution shopExecution = shopService.addShop(shop, imgFile);
         assertEquals(0,shopExecution.getState());
+    }
+
+    @Test
+    public void testModifyShop()throws ShopOperationException {
+        Shop shop = new Shop();
+        shop.setShopId(1L);
+        shop.setShopName("修改后的店铺名称");
+        File imgFile = new File("/Users/yangkun/Pictures/image/xiaohuangren.jpg");
+        ShopExecution shopExecution = shopService.modifyShop(shop, imgFile);
+        assertEquals(1,shopExecution.getState());
     }
 }

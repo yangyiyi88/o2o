@@ -102,9 +102,27 @@ public class ImageUtil {
         return nowTimeStr + rannum;
     }
 
+    /**
+     * 判断storePath是文件路径还是目录的路径
+     * 如果storePath是文件路径则删除该文件
+     * 如果storePath是目录路径则删除该目录下所有文件
+     * @param storePath
+     */
+    public static void deleteFileOrPath(String storePath){
+        File fileOrPath = new File(PathUtil.getImageBasePath() + storePath);
+        if (fileOrPath.isDirectory()){
+            File[] files = fileOrPath.listFiles();
+            for (File file : files){
+                file.delete();
+            }
+        }
+        fileOrPath.delete();
+    }
+
     public static void main(String[] args) throws IOException {
         Thumbnails.of(new File("/Users/yangkun/Pictures/image/xiaohuangren.jpg")).size(200,200)
                 .watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath + "watermark.jpg")),0.25f)
                 .outputQuality(0.8f).toFile("/Users/yangkun/Pictures/image/xhr.jpg");
     }
+
 }

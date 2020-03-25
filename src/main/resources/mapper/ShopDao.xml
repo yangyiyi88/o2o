@@ -1,6 +1,57 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.o2o.dao.ShopDao">
+    <resultMap id="shopResult" type="Shop">
+        <id property="shopId" column="shop_id" javaType="Long"/>
+        <result property="shopName" column="shop_name" javaType="String"/>
+        <result property="shopDesc" column="shop_desc" javaType="String"/>
+        <result property="shopAddr" column="shop_addr" javaType="String"/>
+        <result property="phone" column="phone" javaType="String"/>
+        <result property="shopImg" column="shop_img" javaType="String"/>
+        <result property="priority" column="priority" javaType="Integer"/>
+        <result property="createTime" column="create_time" javaType="Date"/>
+        <result property="lastEditTime" column="last_edit_time" javaType="Date"/>
+        <result property="enableStatus" column="enable_status" javaType="Integer"/>
+        <result property="advice" column="advice" javaType="String"/>
+        <association property="area" column="area_id" javaType="Area">
+            <id property="areaId" column="area_id" javaType="Integer"/>
+            <result property="areaName" column="area_name" javaType="String"/>
+        </association>
+        <association property="shopCategory" column="shop_category_id" javaType="ShopCategory">
+            <id property="shopCategoryId" column="shop_category_id" javaType="Long"/>
+            <result property="shopCategoryName" column="shop_category_name" javaType="String"/>
+        </association>
+    </resultMap>
+
+    <select id="queryByShopId" parameterType="Long" resultMap="shopResult">
+        select
+        s.shop_id,
+        s.shop_name,
+        s.shop_desc,
+        s.shop_addr,
+        s.phone,
+        s.shop_img,
+        s.priority,
+        s.create_time,
+        s.last_edit_time,
+        s.enable_status,
+        s.advice,
+        a.area_id,
+        a.area_name,
+        sc.shop_category_id,
+        sc.shop_category_name
+        from
+        tb_shop s,
+        tb_area a,
+        tb_shop_category sc
+        where
+        s.area_id = a.area_id
+        and
+        s.shop_category_id = sc.shop_category_id
+        and
+        s.shop_id = #{shopId}
+    </select>
+
     <insert id="insertShop" useGeneratedKeys="true" keyColumn="shop_id" keyProperty="shopId" parameterType="Shop">
        insert into tb_shop(owner_id,area_id,shop_category_id,shop_name,shop_desc,shop_addr,phone,shop_img,priority,
        create_time,last_edit_time,enable_status,advice)
@@ -22,7 +73,7 @@
             <if test="enableStatus != null">enable_status=#{enableStatus},</if>
             <if test="advice !=null">advice=#{advice},</if>
             <if test="area != null">area_id=#{area.areaId},</if>
-            <if test="shopCategory != null">shop_category_id=#{shopCategory.shopCategoryId}</if>
+            <if test="shopCategory.shopCategoryId != null">shop_category_id=#{shopCategory.shopCategoryId}</if>
         </set>
         where shop_id=#{shopId}
     </update>
