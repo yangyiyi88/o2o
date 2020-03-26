@@ -42,6 +42,59 @@ public class ShopManagementController {
     @Resource
     private AreaService areaService;
 
+    @GetMapping("/getshopmanagementinfo")
+    @ResponseBody
+    private Map<String, Object> getShopManagementInfo(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+        //从request获取shopId
+        long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+        if (shopId <= 0){
+            //从session中获取shopId
+            Object currentShopObj = request.getSession().getAttribute("currentShop");
+            if (currentShopObj == null){
+                modelMap.put("redirect", true);
+                modelMap.put("url", "/o2o/shopadmin/shoplist");
+            } else {
+                Shop currentShop = (Shop)currentShopObj;
+                modelMap.put("shopId", currentShop.getShopId());
+                modelMap.put("redirect", false);
+            }
+        } else {
+            Shop currentShop = new Shop();
+            currentShop.setShopId(shopId);
+            request.getSession().setAttribute("currentShop", currentShop);
+            modelMap.put("redirect", false);
+        }
+        return modelMap;
+    }
+
+    @GetMapping("/getshoplist")
+    @ResponseBody
+    private Map<String, Object> getShopList(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+
+        //因未在session中存储，先初始化，待删除
+        PersonInfo user = new PersonInfo();
+        user.setUserId(1L);
+        user.setName("测试");
+        request.getSession().setAttribute("user", user);
+
+        //从session中获取用户信息
+        user = (PersonInfo) request.getSession().getAttribute("user");
+        try{
+            Shop shopCondition = new Shop();
+            shopCondition.setOwner(user);
+            ShopExecution shopExecution = shopService.getShopList(shopCondition, 1, 100);
+            modelMap.put("shopList", shopExecution.getShopList());
+            modelMap.put("user", user);
+            modelMap.put("success", true);
+        }catch (Exception e){
+            modelMap.put("success", false);
+            modelMap.put("errMsg", e.getMessage());
+        }
+        return modelMap;
+    }
+
     @GetMapping("/getshopinitinfo")
     @ResponseBody
     private Map<String, Object> getShopInitInfo() {

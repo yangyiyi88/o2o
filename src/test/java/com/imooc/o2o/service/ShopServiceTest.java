@@ -16,6 +16,7 @@ import javax.annotation.Resource;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,5 +56,22 @@ public class ShopServiceTest extends BaseTest {
         File imgFile = new File("/Users/yangkun/Pictures/image/xiaohuangren.jpg");
         ShopExecution shopExecution = shopService.modifyShop(shop, imgFile);
         assertEquals(1,shopExecution.getState());
+    }
+
+    @Test
+    public void testGetShopList() {
+        Shop shopCondition = new Shop();
+        PersonInfo owner = new PersonInfo();
+        owner.setUserId(1L);
+        shopCondition.setOwner(owner);
+        ShopExecution shopExecution = shopService.getShopList(shopCondition, 0, 5);
+        System.out.println("店铺列表的大小：" + shopExecution.getShopList().size());
+        System.out.println("店铺的总数：" + shopExecution.getCount());
+        ShopCategory shopCategory = new ShopCategory();
+        shopCategory.setShopCategoryId(1L);
+        shopCondition.setShopCategory(shopCategory);
+        shopExecution = shopService.getShopList(shopCondition, 0, 2);
+        System.out.println("xin店铺列表的大小：" + shopExecution.getShopList().size());
+        System.out.println("xin店铺的总数：" + shopExecution.getCount());
     }
 }

@@ -7,6 +7,7 @@ import com.imooc.o2o.enums.ShopStateEnum;
 import com.imooc.o2o.exception.ShopOperationException;
 import com.imooc.o2o.service.ShopService;
 import com.imooc.o2o.util.ImageUtil;
+import com.imooc.o2o.util.PageCalculator;
 import com.imooc.o2o.util.PathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 @Service("shopService")
 public class ShopServiceImpl implements ShopService {
@@ -109,6 +111,23 @@ public class ShopServiceImpl implements ShopService {
         }else {
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
         }
+    }
+
+    public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
+        ShopExecution shopExecution = new ShopExecution();
+        //利用工具类类将页码转换成行码
+        int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+        //依据查询条件，调用dao层返回相关的店铺列表
+        List<Shop> shopList = shopDao.queryShopList(shopCondition, rowIndex, pageSize);
+        //依据相同的查询条件，返回店铺总数
+        int count = shopDao.queryShopCount(shopCondition);
+        if (shopList != null) {
+            shopExecution.setShopList(shopList);
+            shopExecution.setCount(count);
+        } else {
+            shopExecution.setState(ShopStateEnum.INNER_ERROR.getState());
+        }
+        return shopExecution;
     }
 
 }
