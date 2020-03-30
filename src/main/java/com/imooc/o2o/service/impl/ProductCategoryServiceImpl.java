@@ -27,7 +27,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
             try{
                 int effected = productCategoryDao.batchInsertProductCategory(productCategoryList);
                 if (effected <= 0) {
-                    return new ProductCategoryExecution(ProductCategoryStateEnum.INNER_ERROR);
+                    throw new ProductCategoryOperationException("商品类别批量添加失败");
                 } else {
                     return new ProductCategoryExecution(ProductCategoryStateEnum.SUCCESS);
                 }
@@ -36,6 +36,22 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
             }
         } else {
             return new ProductCategoryExecution(ProductCategoryStateEnum.EMPTY_LIST);
+        }
+    }
+
+    @Transactional
+    public ProductCategoryExecution removeProductCategory(long productCategoryId, long  shopId) throws ProductCategoryOperationException {
+        //todo将此商品类别下的商品的类别id置为空
+        //删除该productCategory
+        try {
+            int effectedNum = productCategoryDao.deleteProductCategory(productCategoryId, shopId);
+            if (effectedNum <= 0) {
+                throw new ProductCategoryOperationException("商品类别删除失败");
+            } else {
+                return new ProductCategoryExecution(ProductCategoryStateEnum.SUCCESS);
+            }
+        } catch (RuntimeException e){
+            throw new ProductCategoryOperationException("removeProductCategory error:" + e.getMessage());
         }
     }
 }
