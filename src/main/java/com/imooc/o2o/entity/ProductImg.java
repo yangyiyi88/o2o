@@ -26,7 +26,7 @@ public class ProductImg {
     //创建时间
     private Date createTime;
     //商品ID 商品详情图片是属于哪一个商品的，
-    private Integer productId;
+    private Long productId;
 
     public Long getProductImgId() {
         return productImgId;
@@ -68,11 +68,11 @@ public class ProductImg {
         this.createTime = createTime;
     }
 
-    public Integer getProductId() {
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(Integer productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 }
