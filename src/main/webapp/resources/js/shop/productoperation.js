@@ -36,7 +36,7 @@ $(function () {
         $.getJSON(productInfoUrl, function (data) {
             if (data.success){
                 var product = data.product;
-                $("#product-name").val(product.productName);
+                $("#product_name").val(product.productName);
                 $("#priority").val(product.priority);
                 $("#normal_price").val(product.normalPrice);
                 $("#promotion_price").val(product.promotionPrice);
@@ -47,7 +47,7 @@ $(function () {
                 productCategoryList.map(function (item, index) {
                     productCategoryHtml += "<option data-id='"+item.productCategoryId+"'>"+item.productCategoryName+"</option>";
                 });
-                $("#product-category").html(productCategoryHtml);
+                $("#product_category").html(productCategoryHtml);
                 $("#product-category option[data-id='"+product.productCategory.productCategoryId+"']").attr("selected","selected");
             }
         });
@@ -56,7 +56,7 @@ $(function () {
     $("#submit").click(function () {
         var product = {};
         if (isEdit){
-            product.productd = productd;
+            product.productId = productId;
         }
         product.productName = $("#product_name").val();
         product.priority = $("#priority").val();

@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imooc.o2o.dao.ProductDao">
+    <resultMap id="productMap" type="Product">
+        <id property="productId" column="product_id" javaType="Long"/>
+        <result property="productName" column="product_name" javaType="String"/>
+        <result property="productDesc" column="product_desc" javaType="String"/>
+        <result property="imgAddr" column="img_addr" javaType="String"/>
+        <result property="normalPrice" column="normal_price" javaType="String"/>
+        <result property="promotionPrice" column="promotion_price" javaType="String"/>
+        <result property="priority" column="priority" javaType="Integer"/>
+        <result property="createTime" column="create_time" javaType="Date"/>
+        <result property="lastEditTime" column="last_edit_time" javaType="Date"/>
+        <result property="enableStatus" column="enable_status" javaType="Integer"/>
+        <association property="productCategory" column="product_category_id" javaType="ProductCategory">
+            <id property="productCategoryId" column="product_category_id" javaType="Long"/>
+            <result property="productCategoryName" column="product_category_name" javaType="String"/>
+        </association>
+        <association property="shop" column="shop_id" javaType="Shop">
+            <id property="shopId" column="shop_id" javaType="Long"/>
+            <result property="shopName" column="shop_name" javaType="String"/>
+            <result property="owner.userId" column="owner_id" javaType="Long"/>
+        </association>
+        <collection property="productImgList" column="product_id" ofType="ProductImg">
+            <id property="productImgId" column="product_img_id" javaType="Long"/>
+            <result property="imgAddr" column="detail_img" javaType="String"/>
+            <result property="imgDesc" column="img_desc" javaType="String"/>
+            <result property="priority" column="pm_priority" javaType="Integer"/>
+            <result property="createTime" column="create_time" javaType="Date"/>
+            <result property="productId" column="product_id" javaType="Long"/>
+        </collection>
+    </resultMap>
+
     <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
         insert into
         tb_product (product_name, product_desc, img_addr, normal_price, promotion_price,
@@ -9,4 +39,51 @@
         (#{productName}, #{productDesc}, #{imgAddr}, #{normalPrice}, #{promotionPrice},
         #{priority}, #{createTime}, #{lastEditTime}, #{enableStatus}, #{productCategory.productCategoryId}, #{shop.shopId})
     </insert>
+
+    <select id="queryProductByProductId" parameterType="Long" resultMap="productMap">
+        select
+        p.product_id,
+        p.product_name,
+        p.product_desc,
+        p.img_addr,
+        p.normal_price,
+        p.promotion_price,
+        p.priority,
+        p.create_time,
+        p.last_edit_time,
+        p.enable_status,
+        p.product_category_id,
+        p.shop_id,
+        pm.product_img_id,
+        pm.img_addr as detail_img,
+        pm.img_desc,
+        pm.priority as pm_priority,
+        pm.create_time
+        from
+        tb_product as p
+        left join
+        tb_product_img as pm
+        on p.product_id = pm.product_id
+        where p.product_id = #{productId}
+        order by
+        pm.priority desc
+    </select>
+
+    <update id="updateProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productId">
+        update tb_product
+        <set>
+            <if test="productName != null">product_name=#{productName},</if>
+            <if test="productDesc != null">product_desc=#{productDesc},</if>
+            <if test="imgAddr != null">img_addr=#{imgAddr},</if>
+            <if test="normalPrice != null">normal_price=#{normalPrice},</if>
+            <if test="promotionPrice != null">promotion_price=#{promotionPrice},</if>
+            <if test="priority != null">priority=#{priority},</if>
+            <if test="lastEditTime != null">last_edit_time=#{lastEditTime},</if>
+            <if test="enableStatus != null">enable_status=#{enableStatus},</if>
+            <if test="productCategory !=null and productCategory.productCategoryId != null">product_category_id=#{productCategory.productCategoryId}</if>
+        </set>
+        where
+        product_id = #{productId}
+        and shop_id = #{shop.shopId}
+    </update>
 </mapper>

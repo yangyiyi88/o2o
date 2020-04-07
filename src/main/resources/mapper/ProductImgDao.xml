@@ -15,4 +15,14 @@
             )
         </foreach>
     </insert>
+
+    <delete id="deleteProductImgByProductId" parameterType="long">
+        delete from tb_product_img where product_id = #{productId}
+    </delete>
+
+    <select id="queryProductImgByProductId" parameterType="long" resultType="ProductImg">
+        select product_img_id,img_addr,img_desc,priority,create_time,product_id
+        from tb_product_img
+        where product_id = #{productId}
+    </select>
 </mapper>
