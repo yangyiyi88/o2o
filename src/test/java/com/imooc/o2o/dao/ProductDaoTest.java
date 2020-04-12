@@ -8,6 +8,7 @@ import com.imooc.o2o.entity.Shop;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -22,21 +23,45 @@ public class ProductDaoTest extends BaseTest {
 
     @Test
     public void testInsertProduct(){
-        Product product = new Product();
+        Product product1 = new Product();
         Shop shop = new Shop();
         shop.setShopId(1L);
         ProductCategory productCategory = new ProductCategory();
         productCategory.setProductCategoryId(1L);
-        product.setShop(shop);
-        product.setProductCategory(productCategory);
-        product.setProductName("测试商品1");
-        product.setProductDesc("测试商品1");
-        product.setImgAddr("缩略图地址");
-        product.setPriority(200);
-        product.setCreateTime(new Date());
-        product.setLastEditTime(new Date());
-        product.setEnableStatus(1);
-        int effectedNum = productDao.insertProduct(product);
+        product1.setShop(shop);
+        product1.setProductCategory(productCategory);
+        product1.setProductName("测试商品1");
+        product1.setProductDesc("测试商品1");
+        product1.setImgAddr("缩略图地址1");
+        product1.setPriority(200);
+        product1.setCreateTime(new Date());
+        product1.setLastEditTime(new Date());
+        product1.setEnableStatus(1);
+        int effectedNum = productDao.insertProduct(product1);
+        assertEquals(1, effectedNum);
+        Product product2 = new Product();
+        product2.setShop(shop);
+        product2.setProductCategory(productCategory);
+        product2.setProductName("测试商品2");
+        product2.setProductDesc("测试商品2");
+        product2.setImgAddr("缩略图地址2");
+        product2.setPriority(200);
+        product2.setCreateTime(new Date());
+        product2.setLastEditTime(new Date());
+        product2.setEnableStatus(1);
+        effectedNum = productDao.insertProduct(product2);
+        assertEquals(1, effectedNum);
+        Product product3 = new Product();
+        product3.setShop(shop);
+        product3.setProductCategory(productCategory);
+        product3.setProductName("test3");
+        product3.setProductDesc("test3");
+        product3.setImgAddr("缩略图地址2");
+        product3.setPriority(200);
+        product3.setCreateTime(new Date());
+        product3.setLastEditTime(new Date());
+        product3.setEnableStatus(1);
+        effectedNum = productDao.insertProduct(product3);
         assertEquals(1, effectedNum);
     }
 
@@ -84,5 +109,28 @@ public class ProductDaoTest extends BaseTest {
         product.setEnableStatus(1);
         int effectedNum = productDao.updateProduct(product);
         assertEquals(1, effectedNum);
+    }
+
+    @Test
+    public void testQueryProductList(){
+        Product productCondition = new Product();
+        List<Product> productList = productDao.queryProductList(productCondition, 1, 3);
+        int count = productDao.queryProductCount(productCondition);
+        assertEquals(3, productList.size());
+        assertEquals(18, count);
+
+        Shop shop = new Shop();
+        shop.setShopId(1L);
+        productCondition.setShop(shop);
+        productList = productDao.queryProductList(productCondition, 1, 3);
+        count = productDao.queryProductCount(productCondition);
+        assertEquals(3, productList.size());
+        assertEquals(6, count);
+
+        productCondition.setProductName("测试");
+        productList = productDao.queryProductList(productCondition, 1, 3);
+        count = productDao.queryProductCount(productCondition);
+        assertEquals(3, productList.size());
+        assertEquals(4, count);
     }
 }

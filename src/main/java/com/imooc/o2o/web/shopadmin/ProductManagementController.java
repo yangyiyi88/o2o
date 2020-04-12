@@ -59,6 +59,55 @@ public class ProductManagementController {
         return modelMap;
     }
 
+    @GetMapping("/getproductlistbyshop")
+    @ResponseBody
+    public Map<String, Object> getProductListByShop(HttpServletRequest request) {
+        Map<String, Object> modelMap = new HashMap<String, Object>();
+        //获取前台传过来的页码
+        int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+        //获取前台传过来的每页要返回的商品数上限
+        int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
+        //从当前的session中获取店铺信息，主要是获取shopId
+        Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+        if (pageIndex > -1 && pageSize > -1 && currentShop != null && currentShop.getShopId() != null){
+            //获取查询条件
+            Long productCategoryId = HttpServletRequestUtil.getLong(request, "productCategoryId");
+            String productName = HttpServletRequestUtil.getString(request, "productName");
+            //组合查询条件
+            Product productCondition = CompactProductCondition(currentShop, productCategoryId, productName);
+            //获取商品信息
+            ProductExecution productExecution = productService.getProductList(productCondition, pageIndex, pageSize);
+            modelMap.put("productList", productExecution.getProductList());
+            modelMap.put("count", productExecution.getCount());
+            modelMap.put("success", true);
+        } else {
+            modelMap.put("success", false);
+            modelMap.put("errMsg", "empty productId or pageIndex or pageSize");
+        }
+        return modelMap;
+    }
+
+    /**
+     * 组合查询条件
+     * @param currentShop
+     * @param productCategoryId
+     * @param productName
+     * @return
+     */
+    private Product CompactProductCondition(Shop currentShop, Long productCategoryId, String productName) {
+        Product productCondition = new Product();
+        productCondition.setShop(currentShop);
+        if (productCategoryId != -1l) {
+            ProductCategory productCategory = new ProductCategory();
+            productCategory.setProductCategoryId(productCategoryId);
+            productCondition.setProductCategory(productCategory);
+        }
+        if (productName != null) {
+            productCondition.setProductName(productName);
+        }
+        return productCondition;
+    }
+
     @PostMapping("/addproduct")
     @ResponseBody
     public Map<String, Object> addProduct(HttpServletRequest request) {

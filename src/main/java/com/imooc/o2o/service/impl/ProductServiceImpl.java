@@ -9,6 +9,7 @@ import com.imooc.o2o.enums.ProductStateEnum;
 import com.imooc.o2o.exception.ProductOperationException;
 import com.imooc.o2o.service.ProductService;
 import com.imooc.o2o.util.ImageUtil;
+import com.imooc.o2o.util.PageCalculator;
 import com.imooc.o2o.util.PathUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,22 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
     @Autowired
     private ProductImgDao productImgDao;
+
+    public Product getProductById(long productId) {
+        return productDao.queryProductByProductId(productId);
+    }
+
+    public ProductExecution getProductList(Product productCondition, int pageIndex, int pageSize) {
+        //将页码转换成数据的行码，并调用dao层取回指定页码的商品列表
+        int rowIndex = PageCalculator.calculateRowIndex(pageIndex, pageSize);
+        List<Product> productList = productDao.queryProductList(productCondition, rowIndex, pageSize);
+        //基于相同的查询条件返回该查询条件下的商品总数
+        int count = productDao.queryProductCount(productCondition);
+        ProductExecution productExecution = new ProductExecution();
+        productExecution.setCount(count);
+        productExecution.setProductList(productList);
+        return productExecution;
+    }
 
     /**
      * 1.处理缩略图，获取缩略图相对值路径并赋值给product
@@ -76,10 +93,6 @@ public class ProductServiceImpl implements ProductService {
             //传参为空则返回空值错误信息
             return new ProductExecution(ProductStateEnum.EMPT);
         }
-    }
-
-    public Product getProductById(long productId) {
-        return productDao.queryProductByProductId(productId);
     }
 
     /**
