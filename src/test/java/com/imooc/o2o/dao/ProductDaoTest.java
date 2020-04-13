@@ -8,7 +8,6 @@ import com.imooc.o2o.entity.Shop;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -132,5 +131,11 @@ public class ProductDaoTest extends BaseTest {
         count = productDao.queryProductCount(productCondition);
         assertEquals(3, productList.size());
         assertEquals(4, count);
+    }
+
+    @Test
+    public void testUpdateProductCategoryToNull(){
+        int effectedNum = productDao.updateProductCategoryToNull(1l);
+        assertEquals(4, effectedNum);
     }
 }

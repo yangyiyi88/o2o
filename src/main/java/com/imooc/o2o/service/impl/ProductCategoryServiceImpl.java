@@ -1,6 +1,7 @@
 package com.imooc.o2o.service.impl;
 
 import com.imooc.o2o.dao.ProductCategoryDao;
+import com.imooc.o2o.dao.ProductDao;
 import com.imooc.o2o.dto.ProductCategoryExecution;
 import com.imooc.o2o.entity.ProductCategory;
 import com.imooc.o2o.enums.ProductCategoryStateEnum;
@@ -16,6 +17,8 @@ import java.util.List;
 public class ProductCategoryServiceImpl implements ProductCategoryService {
     @Autowired
     private ProductCategoryDao productCategoryDao;
+    @Autowired
+    private ProductDao productDao;
 
     public List<ProductCategory> getProductCategoryList(long shopId) {
         return productCategoryDao.queryProductCategoryList(shopId);
@@ -41,7 +44,15 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Transactional
     public ProductCategoryExecution removeProductCategory(long productCategoryId, long  shopId) throws ProductCategoryOperationException {
-        //todo将此商品类别下的商品的类别id置为空
+        //将此商品类别下的商品的类别id置为空
+        try {
+            int effectedNum = productDao.updateProductCategoryToNull(productCategoryId);
+            if (effectedNum <= 0) {
+                throw new ProductCategoryOperationException("商品的类别id置为空失败");
+            }
+        } catch (ProductCategoryOperationException e) {
+            throw new ProductCategoryOperationException("updateProductCategoryToNull error:" + e.getMessage());
+        }
         //删除该productCategory
         try {
             int effectedNum = productCategoryDao.deleteProductCategory(productCategoryId, shopId);
@@ -50,7 +61,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
             } else {
                 return new ProductCategoryExecution(ProductCategoryStateEnum.SUCCESS);
             }
-        } catch (RuntimeException e){
+        } catch (ProductCategoryOperationException e){
             throw new ProductCategoryOperationException("removeProductCategory error:" + e.getMessage());
         }
     }

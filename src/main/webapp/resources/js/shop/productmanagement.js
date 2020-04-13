@@ -38,13 +38,13 @@ $(function () {
     $(".product-wrap").on("click", "a", function (e) {
         var target = $(e.currentTarget);
         if (target.hasClass("edit")) {
-            window.location.href = "/o2o/shopadmin/productoperation?productId=" + target.dataset.id;
+            window.location.href = "/o2o/shopadmin/productoperation?productId=" + e.currentTarget.dataset.id;
         }
         if (target.hasClass("status")) {
             changeItemStatus(e.currentTarget.dataset.id, e.currentTarget.dataset.status);
         }
         if (target.hasClass("preview")) {
-            window.location.href = "/o2o/frontend/productdetail?productId=" + target.dataset.id;
+            window.location.href = "/o2o/frontend/productdetail?productId=" + e.currentTarget.dataset.id ;
         }
     });
 
