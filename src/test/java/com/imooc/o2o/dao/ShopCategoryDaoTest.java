@@ -27,6 +27,7 @@ public class ShopCategoryDaoTest extends BaseTest {
         List<ShopCategory> list2 = shopCategoryDao.queryShopCategory(shopCategory);
         assertEquals(3,list2.size());
 
+        List<ShopCategory> list3 = shopCategoryDao.queryShopCategory(null);
+        assertEquals(6, list3.size());
     }
-
 }

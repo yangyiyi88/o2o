@@ -13,7 +13,7 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
     @Resource
     private ShopCategoryDao shopCategoryDao;
 
-    public List<ShopCategory> getShopCategory(ShopCategory shopCategoryCondition) {
+    public List<ShopCategory> getShopCategoryList(ShopCategory shopCategoryCondition) {
         return shopCategoryDao.queryShopCategory(shopCategoryCondition);
     }
 }

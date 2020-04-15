@@ -14,11 +14,14 @@
         from
         tb_shop_category
         <where>
+            <if test="shopCategoryCondition == null">
+                and parent_id is null
+            </if>
             <if test="shopCategoryCondition != null">
                 and parent_id is not null
             </if>
-            <if test="shopCategoryCondition.parent != null">
-                and parent_id = #{shopCategory.parent.shopCategoryId}
+            <if test="shopCategoryCondition != null and shopCategoryCondition.parent != null">
+                and parent_id = #{shopCategoryCondition.parent.shopCategoryId}
             </if>
         </where>
         order by priority desc

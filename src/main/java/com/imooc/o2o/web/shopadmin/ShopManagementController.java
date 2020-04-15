@@ -103,7 +103,7 @@ public class ShopManagementController {
         List<Area> areaList = null;
         try {
             //获取店铺分类列表
-            shopCategoryList = shopCategoryService.getShopCategory(new ShopCategory());
+            shopCategoryList = shopCategoryService.getShopCategoryList(new ShopCategory());
             //获取区域分类列表
             areaList = areaService.getAreaList();
             modelMap.put("shopCategoryList", shopCategoryList);

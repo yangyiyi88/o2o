@@ -23,6 +23,8 @@ public class ProductCategoryDaoTest extends BaseTest {
     public void testQueryProductCategoryList(){
         List<ProductCategory> productCategoryList = productCategoryDao.queryProductCategoryList(29L);
         assertEquals(3, productCategoryList.size());
+        productCategoryList = productCategoryDao.queryProductCategoryList(29L);
+        assertEquals(3, productCategoryList.size());
     }
 
     @Test
