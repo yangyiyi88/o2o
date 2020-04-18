@@ -24,10 +24,10 @@ public class ShopCategoryDaoTest extends BaseTest {
         parentshopCategory.setShopCategoryId(12L);
         shopCategory.setParent(parentshopCategory);
         System.out.println("shopCategory parent id :" + shopCategory.getParent().getShopCategoryId());
-        List<ShopCategory> list2 = shopCategoryDao.queryShopCategory(shopCategory);
+        List<ShopCategory> list2 = shopCategoryDao.queryShopCategoryList(shopCategory);
         assertEquals(3,list2.size());
 
-        List<ShopCategory> list3 = shopCategoryDao.queryShopCategory(null);
+        List<ShopCategory> list3 = shopCategoryDao.queryShopCategoryList(null);
         assertEquals(6, list3.size());
     }
 }

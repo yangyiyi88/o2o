@@ -14,6 +14,6 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
     private ShopCategoryDao shopCategoryDao;
 
     public List<ShopCategory> getShopCategoryList(ShopCategory shopCategoryCondition) {
-        return shopCategoryDao.queryShopCategory(shopCategoryCondition);
+        return shopCategoryDao.queryShopCategoryList(shopCategoryCondition);
     }
 }
