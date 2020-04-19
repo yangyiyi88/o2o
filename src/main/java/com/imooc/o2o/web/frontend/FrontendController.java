@@ -15,4 +15,8 @@ public class FrontendController {
     private String shopList(){
         return "frontend/shoplist";
     }
+    @GetMapping("/productdetail")
+    private String productDetail(){
+        return "frontend/productdetail";
+    }
 }
