@@ -155,7 +155,7 @@ $(function () {
 
     //需要查询的店铺名称发生变化后，重置页码，清空原先的店铺列表，按照新的名字去查询
     $("#search").on("change", function (e) {
-        shopNam = e.target.value;
+        shopName = e.target.value;
         $(".list-div").empty();
         pageNum = 1;
         addItems(pageSize, pageNum);

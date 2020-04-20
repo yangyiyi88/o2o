@@ -111,7 +111,7 @@
                 and product_category_id = #{productCondition.productCategory.productCategoryId}
             </if>
             <if test="productCondition.enableStatus != null">
-                and enableStatus = #{productCondition.enableStatus}
+                and enable_status = #{productCondition.enableStatus}
             </if>
             <if test="productCondition.productName != null">
                 and product_name like "%${productCondition.productName}%"
@@ -132,7 +132,7 @@
                 and product_category_id = #{productCondition.productCategory.productCategoryId}
             </if>
             <if test="productCondition.enableStatus != null">
-                and enableStatus = #{productCondition.enableStatus}
+                and enable_status = #{productCondition.enableStatus}
             </if>
             <if test="productCondition.productName != null">
                 and product_name like "%${productCondition.productName}%"
