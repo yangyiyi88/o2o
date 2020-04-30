@@ -11,7 +11,15 @@
     http://www.springframework.org/schema/mvc/spring-mvc.xsd">
     <!--配置整合mybatis过程-->
     <!--1.配置数据库相关参数properties的属性：${url}-->
-    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean class="com.imooc.o2o.util.EncryptPropertyPlaceholderConfigurer">
+        <property name="locations">
+            <list>
+                <value>classpath:jdbc.properties</value>
+                <value>classpath:redis.properties</value>
+            </list>
+        </property>
+        <property name="fileEncoding" value="UTF-8"/>
+    </bean>
 
     <!--2.数据库连接池-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">

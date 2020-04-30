@@ -5,13 +5,14 @@ import com.imooc.o2o.entity.Area;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class AreaServiceTest extends BaseTest{
 
-    @Autowired
+    @Resource
     private AreaService areaService;
     @Test
     public void testAreaService(){
