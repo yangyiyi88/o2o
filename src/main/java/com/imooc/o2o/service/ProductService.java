@@ -2,7 +2,6 @@ package com.imooc.o2o.service;
 
 import com.imooc.o2o.dto.ProductExecution;
 import com.imooc.o2o.entity.Product;
-import com.imooc.o2o.entity.ProductImg;
 import com.imooc.o2o.exception.ProductOperationException;
 
 import java.io.File;

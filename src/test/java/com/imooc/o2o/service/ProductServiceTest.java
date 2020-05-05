@@ -4,7 +4,6 @@ import com.imooc.o2o.BaseTest;
 import com.imooc.o2o.dto.ProductExecution;
 import com.imooc.o2o.entity.Product;
 import com.imooc.o2o.entity.ProductCategory;
-import com.imooc.o2o.entity.ProductImg;
 import com.imooc.o2o.entity.Shop;
 import com.imooc.o2o.enums.ProductStateEnum;
 import com.imooc.o2o.exception.ShopOperationException;

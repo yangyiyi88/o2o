@@ -8,15 +8,11 @@ import com.imooc.o2o.entity.Shop;
 import com.imooc.o2o.entity.ShopCategory;
 import com.imooc.o2o.enums.ShopStateEnum;
 import com.imooc.o2o.exception.ShopOperationException;
-import com.imooc.o2o.service.impl.ShopServiceImpl;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Date;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 

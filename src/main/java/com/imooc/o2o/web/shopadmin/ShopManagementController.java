@@ -72,15 +72,8 @@ public class ShopManagementController {
     @ResponseBody
     private Map<String, Object> getShopList(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<String, Object>();
-
-        //因未在session中存储，先初始化，待删除
-        PersonInfo user = new PersonInfo();
-        user.setUserId(1L);
-        user.setName("测试");
-        request.getSession().setAttribute("user", user);
-
         //从session中获取用户信息
-        user = (PersonInfo) request.getSession().getAttribute("user");
+        PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
         try{
             Shop shopCondition = new Shop();
             shopCondition.setOwner(user);

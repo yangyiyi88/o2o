@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.o2o.dao.LocalAuthDao">
+    <resultMap id="localAuthResultMap" type="LocalAuth">
+        <id property="localAuthId" column="local_auth_id" javaType="Long"/>
+        <result property="username" column="username" javaType="String"/>
+        <result property="password" column="password" javaType="String"/>
+        <result property="createTime" column="create_time" javaType="Date"/>
+        <result property="lastEditTime" column="last_edit_time" javaType="Date"/>
+        <association property="personInfo" column="user_id" javaType="PersonInfo">
+            <id property="userId" column="user_id" javaType="Long"/>
+            <result property="name" column="name" javaType="String"/>
+            <result property="profileImg" column="profile_img" javaType="String"/>
+            <result property="email" column="email" javaType="String"/>
+            <result property="gender" column="gender" javaType="String"/>
+            <result property="enableStatus" column="enable_status" javaType="Integer"/>
+            <result property="userType" column="user_type" javaType="Integer"/>
+            <result property="createTime" column="create_time" javaType="Date"/>
+            <result property="lastEditTime" column="last_edit_time" javaType="Date"/>
+        </association>
+    </resultMap>
+    <select id="queryLocalByUserNameAndPwd" resultMap="localAuthResultMap">
+        select
+        l.local_auth_id,
+        l.username,
+        l.password,
+        l.create_time,
+        l.last_edit_time,
+        p.user_id,
+        p.name,
+        p.profile_img,
+        p.email,
+        p.gender,
+        p.enable_status,
+        p.user_type,
+        p.create_time,
+        p.last_edit_time
+        from
+        tb_local_auth as l
+        left join
+        tb_person_info as p
+        on
+        l.user_id = p.user_id
+        where
+        l.username = #{username}
+        and
+        l.password = #{password}
+    </select>
+
+    <select id="queryLocalByUserId" resultMap="localAuthResultMap">
+         select
+        l.local_auth_id,
+        l.username,
+        l.password,
+        l.create_time,
+        l.last_edit_time,
+        p.user_id,
+        p.name,
+        p.profile_img,
+        p.email,
+        p.gender,
+        p.enable_status,
+        p.user_type,
+        p.create_time,
+        p.last_edit_time
+        from
+        tb_local_auth as l
+        left join
+        tb_person_info as p
+        on
+        l.user_id = p.user_id
+        where
+        p.user_id = #{userId}
+    </select>
+
+    <insert id="insertLocalAuth" useGeneratedKeys="true" keyProperty="localAuthId" parameterType="LocalAuth">
+        insert into
+        tb_local_auth (user_id, username, password, create_time, last_edit_time)
+        values
+        (#{personInfo.userId},#{username},#{password},#{createTime},
+        #{lastEditTime})
+    </insert>
+
+    <update id="updateLocalAuth">
+        update tb_local_auth
+        <set>
+            <if test="newPassword != null">password = #{newPassword},</if>
+            <if test="lastEditTime != null">last_edit_time = #{lastEditTime}</if>
+        </set>
+        where user_id = #{userId}
+        and username = #{username}
+        and password = #{password}
+    </update>
+</mapper>
