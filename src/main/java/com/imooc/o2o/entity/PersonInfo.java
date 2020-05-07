@@ -28,7 +28,7 @@ public class PersonInfo {
     private String email;
     //性别
     private String gender;
-    //状态
+    //状态 0:禁止使用本商城，1:允许使用本商
     private Integer enableStatus;
     //用户类别 1.顾客 2.店家 3.超级管理员
     private Integer userType;
