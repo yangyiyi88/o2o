@@ -38,6 +38,7 @@ $(function () {
                 var product = data.product;
                 $("#product_name").val(product.productName);
                 $("#priority").val(product.priority);
+                $("#point").val(product.point);
                 $("#normal_price").val(product.normalPrice);
                 $("#promotion_price").val(product.promotionPrice);
                 $("#integral").val(product.priority);
@@ -60,6 +61,7 @@ $(function () {
         }
         product.productName = $("#product_name").val();
         product.priority = $("#priority").val();
+        product.point = $("#point").val();
         product.normalPrice = $("#normal_price").val();
         product.promotionPrice = $("#promotion_price").val();
         product.productDesc = $("#product_desc").val();

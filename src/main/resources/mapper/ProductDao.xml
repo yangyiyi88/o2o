@@ -12,6 +12,7 @@
         <result property="createTime" column="create_time" javaType="Date"/>
         <result property="lastEditTime" column="last_edit_time" javaType="Date"/>
         <result property="enableStatus" column="enable_status" javaType="Integer"/>
+        <result property="point" column="point" javaType="Integer"/>
         <association property="productCategory" column="product_category_id" javaType="ProductCategory">
             <id property="productCategoryId" column="product_category_id" javaType="Long"/>
             <result property="productCategoryName" column="product_category_name" javaType="String"/>
@@ -34,10 +35,10 @@
     <insert id="insertProduct" parameterType="Product" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
         insert into
         tb_product (product_name, product_desc, img_addr, normal_price, promotion_price,
-        priority, create_time, last_edit_time, enable_status, product_category_id, shop_id)
+        priority, create_time, last_edit_time, enable_status, point, product_category_id, shop_id)
         values
         (#{productName}, #{productDesc}, #{imgAddr}, #{normalPrice}, #{promotionPrice},
-        #{priority}, #{createTime}, #{lastEditTime}, #{enableStatus}, #{productCategory.productCategoryId}, #{shop.shopId})
+        #{priority}, #{createTime}, #{lastEditTime}, #{enableStatus}, #{point} #{productCategory.productCategoryId}, #{shop.shopId})
     </insert>
 
     <select id="queryProductByProductId" parameterType="Long" resultMap="productMap">
@@ -52,6 +53,7 @@
         p.create_time,
         p.last_edit_time,
         p.enable_status,
+        p.point,
         p.product_category_id,
         p.shop_id,
         pm.product_img_id,
@@ -80,6 +82,7 @@
             <if test="priority != null">priority=#{priority},</if>
             <if test="lastEditTime != null">last_edit_time=#{lastEditTime},</if>
             <if test="enableStatus != null">enable_status=#{enableStatus},</if>
+            <if test="point != null">point=#{point},</if>
             <if test="productCategory !=null and productCategory.productCategoryId != null">product_category_id=#{productCategory.productCategoryId}</if>
         </set>
         where
@@ -99,6 +102,7 @@
         create_time,
         last_edit_time,
         enable_status,
+        point,
         product_category_id,
         shop_id
         from

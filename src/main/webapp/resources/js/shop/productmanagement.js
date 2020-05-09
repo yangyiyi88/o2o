@@ -11,7 +11,7 @@ $(function () {
             if (data.success) {
                 var html = "";
                 //遍历每条商品信息，拼接成一行显示，列信息包括：
-                //商品名称，优先级，上架\下架（含productId），编辑（含productId），预览（含productId）
+                //商品名称，积分，上架\下架（含productId），编辑（含productId），预览（含productId）
                 data.productList.map(function (item, index) {
                     var textOp = "下架";
                     var contraryStatus = 0;
@@ -21,7 +21,7 @@ $(function () {
                     }
                     html += '<div class="row row-product">'+
                         '<div class="col-33 product-name">'+item.productName+'</div>'+
-                        '<div class="col-20">'+item.priority+'</div>'+
+                        '<div class="col-20">'+item.point+'</div>'+
                         '<div class="col-40">' +
                         '<a href="#" class="edit" data-id="'+item.productId+'">编辑</a>' +
                         '<a href="#" class="status" data-id="'+item.productId+'" data-status="'+contraryStatus+'">'+textOp+'</a>'+

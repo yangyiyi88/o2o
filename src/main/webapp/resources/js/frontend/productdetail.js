@@ -14,6 +14,10 @@ $(function () {
             $("#product-time").text(new Date(product.lastEditTime).Format("yyyy-MM-dd"));
             $("#product-name").text(product.productName);
             $("#product-desc").text(product.productDesc);
+            //购买可得积分
+            if (product.point != undefined) {
+                $("#product-point").text("购买可得" + product.point + "积分");
+            }
             //商品价格展示逻辑，主要判断原价现价是否为空，所有都为空则不显示价格栏目
             if (product.normalPrice != undefined && product.promotionPrice != undefined) {
                 //如果原价和现价都不为空则都展示，并且给原价加个删除符号

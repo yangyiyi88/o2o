@@ -44,6 +44,8 @@ public class Product {
     private Integer enableStatus;
     //商品类别
     private ProductCategory productCategory;
+    //积分
+    private Integer point;
     //商品是哪个店铺发布的
     private Shop shop;
     //商品详情图片列表  商品和商品详情图片是一对多的关系
@@ -135,6 +137,14 @@ public class Product {
 
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
+    }
+
+    public Integer getPoint() {
+        return point;
+    }
+
+    public void setPoint(Integer point) {
+        this.point = point;
     }
 
     public Shop getShop() {
