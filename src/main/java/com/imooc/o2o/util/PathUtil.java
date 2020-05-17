@@ -6,7 +6,7 @@ public class PathUtil {
     public static String getImageBasePath(){
         String os = System.getProperty("os.name");
         String basePath = "";
-        if(basePath.toLowerCase().startsWith("win")){
+        if(os.toLowerCase().startsWith("win")){
             basePath = "D:/yangkun/Pictures/image";
         }else {
             basePath = "/Users/yangkun/Pictures/image";
