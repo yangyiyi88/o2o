@@ -17,7 +17,7 @@
     </repositories>
 
     <properties>
-        <spring.version>5.2.4.RELEASE</spring.version>
+        <spring.version>6.0.0</spring.version>
     </properties>
 
     <dependencies>
